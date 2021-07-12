@@ -1,0 +1,51 @@
+﻿@model IEnumerable<ImageGallery.ViewModel.ImageList>
+
+<ul style="list-style:none;" class="row">
+    <style>
+        .show-read-more .more-text {
+            display: none;
+        }
+    </style>
+    @foreach (var item in Model)
+    {
+<li class="col-md-3">
+    <br />
+    <a data-fancybox="gallery" data-caption="@item.Title" href="@Url.Action("GetImage", "DownloadFile", new { Area ="" , Id= item.WebImageId })">
+        <img class="img" src="@Url.Action("GetImage", "DownloadFile", new { Area ="" , Id= item.WebImageId, t =2 })" style="width:100%;height:180px;" />
+    </a>
+    <br />
+    <label>@item.Title </label>
+    <label>@item.Make</label>
+    <label>@item.Modal</label>
+    <label>@item.Registration</label>
+    
+    <p class="show-read-more">
+        <text> @item.Details </text>
+    </p>
+    <br />
+    <br />
+</li>
+    }
+</ul>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        var maxLength = 150;
+        $(".show-read-more").each(function () {
+            var myStr = $(this).text();
+            if ($.trim(myStr).length > maxLength) {
+                var newStr = myStr.substring(0, maxLength);
+                var removedStr = myStr.substring(maxLength, $.trim(myStr).length);
+                $(this).empty().html(newStr);
+                $(this).append(' <a href="javascript:void(0);" class="read-more">read more...</a>');
+                $(this).append('<span class="more-text">' + removedStr + '</span>');
+            }
+        });
+        $(".read-more").click(function () {
+            $(this).siblings(".more-text").contents().unwrap();
+            $(this).remove();
+        });
+    });
+
+</script>
